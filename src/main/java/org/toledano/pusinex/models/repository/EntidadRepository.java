@@ -5,6 +5,6 @@ import org.toledano.pusinex.models.entity.Entidad;
 
 import java.util.List;
 
-public interface EntidadRepository extends CrudRepository<Entidad, Long> {
+public interface EntidadRepository extends CrudRepository<Entidad, Integer> {
     Entidad findByEntidad(int entidad);
 }

@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.toledano.pusinex.models.repository.EntidadRepository;
+import org.toledano.pusinex.models.repository.IDistritoFederalRepository;
 
 @SpringBootApplication
 public class PusinexApplication {
@@ -18,11 +19,11 @@ public class PusinexApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(EntidadRepository repository) {
+	public CommandLineRunner demo(IDistritoFederalRepository repository) {
 		return (args) -> {
 			log.info("Buscando Tlaxcala");
 			log.info("-----------------");
-			log.info(String.valueOf(repository.findByEntidad(29)));
+			log.info(String.valueOf(repository.findAll()));
 		};
 	}
 }
