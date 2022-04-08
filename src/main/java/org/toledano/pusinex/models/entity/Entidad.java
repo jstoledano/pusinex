@@ -11,28 +11,17 @@ import javax.persistence.Table;
 @Getter
 @Setter
 @Entity
-@Table(name = "entidad")
+@Table(name = "app_entidad")
 public class Entidad {
     @Id
     @Column(name = "entidad", nullable = false)
-    private Integer id;
+    private Integer entidad;
 
-    @Column(name = "nombre", nullable = false, length = 100)
+    @Column(name = "nombre", nullable = false, columnDefinition = "nvarchar", length = 100)
     private String nombre;
 
-//    public String getNombre() {
-//        return nombre;
-//    }
-//
-//    public void setNombre(String nombre) {
-//        this.nombre = nombre;
-//    }
-//
-//    public Integer getId() {
-//        return id;
-//    }
-//
-//    public void setId(Integer id) {
-//        this.id = id;
-//    }
+    @Override
+    public String toString() {
+        return entidad + " " + nombre;
+    }
 }
