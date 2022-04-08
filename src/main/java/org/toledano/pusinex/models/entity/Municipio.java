@@ -11,7 +11,7 @@ import javax.persistence.*;
 @Table(name="app_municipio")
 public class Municipio {
     @Id
-    private int municipio;
+    private Integer municipio;
 
     @Column(name = "nombre", nullable = false, columnDefinition = "nvarchar", length = 100)
     private String nombre;
@@ -22,6 +22,8 @@ public class Municipio {
 
     @Override
     public  String toString() {
-        return String.format("%02d", this.entidadId.getEntidad()) + this.nombre;
+        return String.format("%02d", this.entidadId.getEntidad()) +
+                String.format("%03d", this.municipio) + " " +
+                this.nombre.toUpperCase();
     }
 }
