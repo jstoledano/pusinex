@@ -19,7 +19,7 @@ public class Seccion {
 
     @OneToOne
     @JoinColumn(name="distrito_federal_id", referencedColumnName = "distrito_federal")
-    private DistritoFederal DistritoFederalId;
+    private DistritoFederal distritoFederalId;
 
     @OneToOne
     @JoinColumn(name="entidad_id", referencedColumnName = "entidad")
@@ -32,9 +32,9 @@ public class Seccion {
     @Override
     public  String toString() {
         return String.format("%02d", this.entidadId.getEntidad()) +
-               String.format("%03d", this.municipioId.getMunicipio()) +
-               String.format("%02d", this.DistritoFederalId.getDistritoFederal()) +
+                String.format("%02d", this.distritoFederalId.getDistritoFederal()) +
+                String.format("%03d", this.municipioId.getMunicipio()) +
                 " - " +
-               String.format("%04d", this.seccion);
+                String.format("%04d", this.seccion);
     }
 }
