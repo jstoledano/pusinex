@@ -15,7 +15,7 @@ import javax.persistence.Table;
 public class Entidad {
     @Id
     @Column(name = "entidad", nullable = false)
-    private Integer entidad;
+    private int entidad;
 
     @Column(name = "nombre", nullable = false, columnDefinition = "nvarchar", length = 100)
     private String nombre;
