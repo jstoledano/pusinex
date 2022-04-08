@@ -22,6 +22,6 @@ public class Localidad {
 
     @Override
     public String toString() {
-        return seccionId.getSeccion() + " " + localidad + " " + nombre;
+        return String.format("%04d", seccionId.getSeccion()) + " " + String.format("%04d", localidad) + " " + nombre.toUpperCase();
     }
 }
