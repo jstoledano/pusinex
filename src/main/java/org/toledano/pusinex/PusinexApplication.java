@@ -23,7 +23,7 @@ public class PusinexApplication {
 		return (args) -> {
 			log.info("Buscando Tlaxcala");
 			log.info("-----------------");
-			log.info(String.valueOf(repository.findAll()));
+			log.info(String.valueOf(repository.findByEntidadIdAndDistrito(29, 1)));
 		};
 	}
 }
