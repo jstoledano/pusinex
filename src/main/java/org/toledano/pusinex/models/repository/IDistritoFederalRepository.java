@@ -9,6 +9,5 @@ import java.util.List;
 
 public interface IDistritoFederalRepository extends CrudRepository<DistritoFederal, Integer> {
     List<DistritoFederal> findByEntidadId_entidad(int entidad);
-    @Query("SELECT d FROM DistritoFederal d WHERE d.entidadId.entidad=:entidadId AND d.distritoFederal=:distrito")
-    DistritoFederal findByEntidadIdAndDistrito(@RequestParam("entidadId") int entidadId, @RequestParam("distrito") int distrito);
+    DistritoFederal findByEntidadId_EntidadAndDistritoFederal(int entidad, int distrito);
 }
