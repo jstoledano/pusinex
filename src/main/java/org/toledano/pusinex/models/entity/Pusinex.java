@@ -19,4 +19,12 @@ public class Pusinex {
     private StatusPusinex statusPusinex;
 
     private java.sql.Date fechaLevantamiento;
+
+    @Override
+    public String toString() {
+        return String.format("%04d", this.localidad.getSeccionId().getSeccion()) + " " +
+                String.format("%04d", this.localidad.getLocalidad()) + " " +
+                this.localidad.getNombre()
+                + " (" + this.getFechaLevantamiento() + ")";
+    }
 }
