@@ -12,9 +12,11 @@ public class Pusinex {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne @JoinColumn(name="id")
-    private Localidad localidadId;
+    @OneToOne @JoinColumn()
+    private Localidad localidad;
 
     @OneToOne @JoinColumn(name="status")
     private StatusPusinex statusPusinex;
+
+    private java.sql.Date fechaLevantamiento;
 }
