@@ -7,8 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.toledano.pusinex.models.repository.ILocalidadRepository;
-import org.toledano.pusinex.models.repository.IMunicipioRepository;
-import org.toledano.pusinex.models.repository.ISeccionRepository;
+
 
 @SpringBootApplication
 public class PusinexApplication {

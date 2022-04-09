@@ -8,7 +8,9 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity
-@Table(name="app_municipio")
+@Table(name="app_municipio", uniqueConstraints={
+        @UniqueConstraint( name = "idx_Entidad_Municipio",  columnNames ={"entidad_id","municipio"})
+})
 public class Municipio {
     @Id
     private Integer municipio;

@@ -9,7 +9,9 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "app_seccion")
+@Table(name = "app_seccion", uniqueConstraints={
+        @UniqueConstraint( name = "idx_Entidad_Seccion",  columnNames ={"entidad_id","seccion"})
+})
 public class Seccion {
     @Id
     private int seccion;
