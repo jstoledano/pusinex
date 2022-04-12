@@ -6,7 +6,7 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Setter @Getter @Entity
-@Table(uniqueConstraints={@UniqueConstraint(columnNames ={"seccion_seccion","localidad"})})
+@Table(uniqueConstraints={@UniqueConstraint(columnNames ={"seccion","localidad"})})
 public class Localidad {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
@@ -20,7 +20,7 @@ public class Localidad {
     private String tipo;
 
     @OneToOne
-    @JoinColumn()
+    @JoinColumn(name = "seccion")
     private Seccion seccion;
 
     @Override
