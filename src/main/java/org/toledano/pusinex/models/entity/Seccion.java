@@ -9,7 +9,7 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(uniqueConstraints={@UniqueConstraint(columnNames ={"entidad_entidad","seccion"})})
+@Table(uniqueConstraints={@UniqueConstraint(columnNames ={"entidad","seccion"})})
 public class Seccion {
     @Id
     private int seccion;
@@ -22,11 +22,11 @@ public class Seccion {
     private DistritoFederal distritoFederal;
 
     @OneToOne
-    @JoinColumn()
+    @JoinColumn(name = "entidad")
     private Entidad entidad;
 
     @OneToOne
-    @JoinColumn()
+    @JoinColumn(name = "municipio")
     private Municipio municipio;
 
     @Override
