@@ -7,7 +7,7 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity
-@Table(uniqueConstraints={@UniqueConstraint(columnNames ={"entidad_entidad","municipio"})})
+@Table(uniqueConstraints={@UniqueConstraint(columnNames ={"entidad","municipio"})})
 public class Municipio {
     @Id
     private Integer municipio;
@@ -15,7 +15,7 @@ public class Municipio {
     private String nombre;
 
     @OneToOne
-    @JoinColumn()
+    @JoinColumn(name = "entidad")
     private Entidad entidad;
 
     @Override
