@@ -6,24 +6,28 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Setter @Getter @Entity
-@Table(name = "app_localidad", uniqueConstraints={
-        @UniqueConstraint( name = "idx_Seccion_Localidad",  columnNames ={"seccion_id","localidad"})
-})
+@Table(uniqueConstraints={@UniqueConstraint(columnNames ={"seccion","localidad"})})
 public class Localidad {
-    @Id
+    @Id @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
-    @Column(nullable = false, columnDefinition = "smallint")
+
+    @Column(nullable = false)
     private int localidad;
-    @Column(nullable = false, columnDefinition = "nvarchar", length = 100)
+
     private String nombre;
-    @Column(nullable = false, columnDefinition = "nvarchar", length = 1)
+
+    @Column(length = 1)
     private String tipo;
+
     @OneToOne
-    @JoinColumn(name="seccion_id", referencedColumnName = "seccion")
-    private Seccion seccionId;
+    @JoinColumn(name = "seccion")
+    private Seccion seccion;
 
     @Override
     public String toString() {
-        return String.format("%04d", seccionId.getSeccion()) + " " + String.format("%04d", localidad) + " " + nombre.toUpperCase();
+        return String.format(
+                "%04d", seccion.getSeccion()) +
+                " " + String.format("%04d", localidad) +
+                " " + nombre.toUpperCase();
     }
 }

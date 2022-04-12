@@ -6,7 +6,6 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity @Setter @Getter
-@Table(name = "pusinexj")
 public class Pusinex {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -15,14 +14,14 @@ public class Pusinex {
     @OneToOne @JoinColumn()
     private Localidad localidad;
 
-    @OneToOne @JoinColumn(name="status")
-    private StatusPusinex statusPusinex;
+    @OneToOne @JoinColumn()
+    private StatusPusinex status;
 
     private java.sql.Date fechaLevantamiento;
 
     @Override
     public String toString() {
-        return String.format("%04d", this.localidad.getSeccionId().getSeccion()) + " " +
+        return String.format("%04d", this.localidad.getSeccion().getSeccion()) + " " +
                 String.format("%04d", this.localidad.getLocalidad()) + " " +
                 this.localidad.getNombre()
                 + " (" + this.getFechaLevantamiento() + ")";
