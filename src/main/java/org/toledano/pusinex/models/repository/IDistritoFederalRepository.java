@@ -8,6 +8,6 @@ import org.toledano.pusinex.models.entity.DistritoFederal;
 import java.util.List;
 
 public interface IDistritoFederalRepository extends CrudRepository<DistritoFederal, Integer> {
-    List<DistritoFederal> findByEntidadId_entidad(int entidad);
-    DistritoFederal findByEntidadId_EntidadAndDistritoFederal(int entidad, int distrito);
+    List<DistritoFederal> findByEntidad_entidad(int entidad);
+    DistritoFederal findByEntidad_EntidadAndDistritoFederal(int entidad, int distrito);
 }
