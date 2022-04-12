@@ -9,33 +9,31 @@ import javax.persistence.*;
 @Getter
 @Setter
 @Entity
-@Table(name = "app_seccion", uniqueConstraints={
-        @UniqueConstraint( name = "idx_Entidad_Seccion",  columnNames ={"entidad_id","seccion"})
-})
+@Table(uniqueConstraints={@UniqueConstraint(columnNames ={"entidad_entidad","seccion"})})
 public class Seccion {
     @Id
     private int seccion;
 
-    @Column(name = "tipo", nullable = false, columnDefinition = "nvarchar", length = 1)
+    @Column(length = 1)
     private String tipo;
 
     @OneToOne
-    @JoinColumn(name="distrito_federal_id", referencedColumnName = "distrito_federal")
-    private DistritoFederal distritoFederalId;
+    @JoinColumn()
+    private DistritoFederal distritoFederal;
 
     @OneToOne
-    @JoinColumn(name="entidad_id", referencedColumnName = "entidad")
-    private Entidad entidadId;
+    @JoinColumn()
+    private Entidad entidad;
 
     @OneToOne
-    @JoinColumn(name="municipio_id", referencedColumnName = "municipio")
-    private Municipio municipioId;
+    @JoinColumn()
+    private Municipio municipio;
 
     @Override
     public  String toString() {
-        return String.format("%02d", this.entidadId.getEntidad()) +
-                String.format("%02d", this.distritoFederalId.getDistritoFederal()) +
-                String.format("%03d", this.municipioId.getMunicipio()) +
+        return String.format("%02d", this.entidad.getEntidad()) +
+                String.format("%02d", this.distritoFederal.getDistritoFederal()) +
+                String.format("%03d", this.municipio.getMunicipio()) +
                 " - " +
                 String.format("%04d", this.seccion);
     }
