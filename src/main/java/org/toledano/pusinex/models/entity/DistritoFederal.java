@@ -12,6 +12,9 @@ import javax.persistence.*;
 @Table(uniqueConstraints={@UniqueConstraint(columnNames ={"entidad","distritoFederal"})})
 public class DistritoFederal {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+
     private Integer distritoFederal;
     private String cabecera;
 
