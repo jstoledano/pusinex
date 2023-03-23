@@ -6,7 +6,11 @@
   <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
     <p class="fs-4 text-muted">Localidad</p>
     <h1 class="display-4 fw-normal">{{ localidad.localidad|stringformat:"04d" }} {{ localidad.nombre }}</h1>
-    <p class="fs-5 text-muted">Municipio de {{ localidad.municipio.municipio|stringformat:"03d" }} {{ localidad.municipio.nombre }}</p>
+    <p class="fs-5 text-muted">Municipio de
+      <a href="{% url 'municipio' localidad.municipio.id %}">
+        {{ localidad.municipio.municipio|stringformat:"03d" }} {{ localidad.municipio.nombre }}
+      </a>
+    </p>
   </div>
 {% endblock hero %}
 

@@ -32,7 +32,11 @@
     <tbody>
       {% for obj in filter.qs %}
         <tr>
-          <td>{{ obj.municipio }}</td>
+          <td>
+            <a href="{% url 'municipio' obj.municipio.id %}">
+              {{ obj.municipio.municipio|stringformat:"03d" }} {{ obj.municipio.nombre }}
+            </a>
+        </td>
           <td>
             <a href="{% url 'localidad' obj.id %}">
               {{ obj.localidad|stringformat:"04d" }} {{ obj.nombre }}

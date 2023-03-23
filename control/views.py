@@ -1,6 +1,6 @@
 from dal import autocomplete
 from django.db.models import Q
-from django.views.generic import TemplateView, DetailView, CreateView
+from django.views.generic import TemplateView, DetailView, CreateView, ListView
 from django_filters.rest_framework import DjangoFilterBackend
 from django_filters.views import FilterView
 from django.urls import reverse, reverse_lazy
@@ -49,6 +49,11 @@ class PusinexDetail(DetailView):
 class LocalidadDetail(DetailView):
     model = Localidad
     context_object_name = 'localidad'
+
+
+class MunicipioDetail(DetailView):
+    model = Municipio
+    context_object_name = 'municipio'
 
 
 class CreatePUSINEX(LoginRequiredMixin, CreateView):
@@ -114,3 +119,13 @@ class PusinexViewSet(viewsets.ModelViewSet):
 class LogoutView(TemplateView):
     next_page = reverse_lazy('index')
     redirect_field_name = 'next'
+
+
+class VNM2023(ListView):
+    secciones = (12, 14, 16, 17, 26, 27, 30, 34, 36, 43, 48, 74, 107, 184, 188, 201, 203, 218, 261, 409, 414, 474, 478, 482, 506, 542, 543, 533, 534, 606, 9, 124, 134, 141, 147, 266, 348, 349, 355, 363, 364, 384, 624, 397, 441, 442, 469, 626, 567, 392, 159, 151, 2, 78, 85, 87, 89, 234, 242, 290, 297, 325, 336, 425, 511, 512, 515, 575, 581, 589, 593, 597, 314, 551, 473, 142)
+    model = Seccion
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        qs = Seccion.objects.filter(seccion__in=self.secciones).order_by('distrito', 'seccion')
+        return qs
