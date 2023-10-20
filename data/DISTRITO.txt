@@ -1,0 +1,4 @@
+"distrito","cabecera"
+1,"APIZACO"
+2,"TLAXCALA DE XICOHTENCATL"
+3,"ZACATELCO"

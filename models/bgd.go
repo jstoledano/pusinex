@@ -1,4 +1,4 @@
-package pusinex
+package models
 
 import (
 	"gorm.io/gorm"
