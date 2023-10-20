@@ -6,19 +6,22 @@ import (
 
 type Distrito struct {
 	gorm.Model
-	Distrito uint
+	ID       uint
+	Distrito uint `gorm:"primaryKey"`
 	Cabecera string
 }
 
 type Municipio struct {
 	gorm.Model
-	Municipio uint
+	ID        uint
+	Municipio uint `gorm:"primaryKey"`
 	Nombre    string
 }
 
 type Seccion struct {
 	gorm.Model
-	Sección   uint
+	ID        uint
+	Sección   uint `gorm:"primaryKey"`
 	Distrito  uint
 	Municipio uint
 	Tipo      uint
