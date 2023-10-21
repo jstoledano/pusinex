@@ -3,9 +3,9 @@ package main
 import (
 	"log"
 
-	"gorm.io/gorm/clause"
+	"pusinex/models"
 
-	models "pusinex/db"
+	"gorm.io/gorm/clause"
 )
 
 func main() {
