@@ -5,7 +5,7 @@ import (
 
 	"gorm.io/gorm/clause"
 
-	"pusinex/models"
+	models "pusinex/db"
 )
 
 func main() {
