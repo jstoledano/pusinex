@@ -1,7 +1,10 @@
 package main
 
 import (
+	"encoding/csv"
 	"log"
+	"os"
+	"strconv"
 
 	"pusinex/models"
 
@@ -56,4 +59,45 @@ func main() {
 	db.Model(&models.Distrito{}).Count(&count)
 	log.Println(count)
 
+	// Abrir el archivo
+	f, err := os.Open("data/DISTRITO.txt")
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	csvReader := csv.NewReader(f)
+	data, err := csvReader.ReadAll()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	var distritosCSV []models.Distrito
+	for _, row := range data[1:] {
+		log.Println(row[0], row[1])
+		d, _ := strconv.ParseUint(row[0], 10, 32)
+		id := uint(d)
+		distritosCSV = append(distritosCSV, models.Distrito{ID: id, Distrito: id, Cabecera: row[1]})
+	}
+
+	log.Println(distritosCSV)
+
+	// Inicio de la transacción
+	tx = db.Begin()
+	// Recorremos los elementos del slice para realizar el upsert
+	for _, dto := range distritosCSV {
+		log.Println(dto.Distrito, dto.Cabecera)
+		if err := tx.Clauses(clause.OnConflict{
+			Columns:   []clause.Column{{Name: "distrito"}},
+			DoUpdates: clause.Assignments(map[string]interface{}{"id": dto.Distrito, "cabecera": dto.Cabecera}),
+		}).Create(&dto).Error; err != nil {
+			tx.Rollback()
+			log.Println("distritos -- ", err)
+		}
+		log.Println("distrito -- ", dto.Distrito, dto.Cabecera)
+	}
+	// Fin de la transacción
+	tx.Commit()
+
+	defer f.Close()
+	log.Println(f.Name())
 }
