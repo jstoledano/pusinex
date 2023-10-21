@@ -14,8 +14,6 @@ func main() {
 		panic("Error al crear la base de datos")
 	}
 
-	log.Printf("Database connection established: %v", db)
-
 	errTables := models.InitTables(db)
 	if errTables != nil {
 		panic(errTables)
@@ -42,19 +40,13 @@ func main() {
 
 	// Recorremos los elementos del slice para realizar el upsert
 	for _, dto := range distritos {
-		log.Println("distrito -- ", dto.Distrito, dto.Cabecera)
+		log.Println(dto.Distrito, dto.Cabecera)
 		if err := tx.Clauses(clause.OnConflict{
 			Columns:   []clause.Column{{Name: "distrito"}},
 			DoUpdates: clause.Assignments(map[string]interface{}{"cabecera": dto.Cabecera}),
-		}).Create(&distrito).Error; err != nil {
+		}).Create(&dto).Error; err != nil {
 			tx.Rollback()
 			log.Println("distritos -- ", err)
-		} else {
-			// Una vez que la transacción se ha confirmado, podemos cargar los datos desde la base de datos
-			var result models.Distrito
-			db.Where("distrito = ?", dto.Distrito).First(&result)
-			// Imprime los datos guardados
-			log.Println("ID:", result.ID, "Distrito:", result.Distrito, "Cabecera:", result.Cabecera)
 		}
 	}
 
