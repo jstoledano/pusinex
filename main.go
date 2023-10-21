@@ -43,7 +43,7 @@ func main() {
 		log.Println(dto.Distrito, dto.Cabecera)
 		if err := tx.Clauses(clause.OnConflict{
 			Columns:   []clause.Column{{Name: "distrito"}},
-			DoUpdates: clause.Assignments(map[string]interface{}{"cabecera": dto.Cabecera}),
+			DoUpdates: clause.Assignments(map[string]interface{}{"id": dto.Distrito, "cabecera": dto.Cabecera}),
 		}).Create(&dto).Error; err != nil {
 			tx.Rollback()
 			log.Println("distritos -- ", err)
@@ -55,4 +55,5 @@ func main() {
 
 	db.Model(&models.Distrito{}).Count(&count)
 	log.Println(count)
+
 }
