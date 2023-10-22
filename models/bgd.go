@@ -9,7 +9,7 @@ type Distrito struct {
 	ID        uint
 	Distrito  uint `gorm:"primaryKey"`
 	Cabecera  string
-	Secciones []Seccion
+	Secciones []Seccion `gorm:"foreignKey:DistritoID"`
 }
 
 type Municipio struct {
@@ -23,9 +23,8 @@ type Municipio struct {
 type Seccion struct {
 	gorm.Model
 	ID          uint
-	Sección     uint `gorm:"primaryKey"`
+	Seccion     uint `gorm:"primaryKey"`
 	DistritoID  uint
 	MunicipioID uint
 	Tipo        uint
-	Estado      uint
 }

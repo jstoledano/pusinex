@@ -100,4 +100,13 @@ func main() {
 
 	defer f.Close()
 	log.Println(f.Name())
+
+	apizaco := models.Municipio{ID: 3, Municipio: 3, Nombre: "APIZACO"}
+	secc38 := models.Seccion{ID: 38, Seccion: 38, DistritoID: 3, MunicipioID: 3, Tipo: 1}
+
+	db.Create(&apizaco)
+	db.Create(&secc38)
+
+	log.Println(apizaco)
+	log.Println(secc38)
 }
