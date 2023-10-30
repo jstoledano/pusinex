@@ -13,11 +13,20 @@ var db *gorm.DB
 var once sync.Once
 var err error
 
-func InitDB() (*gorm.DB, error) {
-	// La función InitDB inicializa la base de datos,
-	// usando el patrón de diseño `singleton` y devuelve
-	// un objeto gorm.DB y un objeto error
+// La estructura Tabla nos ayuda a cargar un archivo csv
+// en la base de datos
+type Table struct {
+	Name    string
+	Headers bool
+	Fields  []string
+	IdName  string
+	IdCol   int
+}
 
+// La función InitDB inicializa la base de datos,
+// usando el patrón de diseño `singleton` y devuelve
+// un objeto gorm.DB y un objeto error
+func InitDB() (*gorm.DB, error) {
 	once.Do(func() {
 		// La función sync.Do asegura que la inicialización se
 		// realice solo una vez, no importa cuántas veces se llame
@@ -44,13 +53,18 @@ func InitDB() (*gorm.DB, error) {
 	return db, err
 }
 
+// La función InitTables verifica que existan las tablas Distrito,
+// Municipio, Sección y Pusinex. Si no existe alguna tabla, la crea.
 func InitTables(db *gorm.DB) error {
-	// La función InitTables verifica que existan las tablas Distrito,
-	// Municipio, Sección y Pusinex. Si no existe alguna tabla, la crea.
-
 	if err := db.AutoMigrate(&Distrito{}, &Municipio{}, &Seccion{}); err != nil {
 		return err
 	}
+	return nil
+}
 
+// La función CargarDatos(*db, file) carga el archivo
+// csv `file` en la base indicada.
+func CargarDatos(db *gorm.DB, file string, table Table) error {
+	log.Println(table.Name)
 	return nil
 }

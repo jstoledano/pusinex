@@ -1,6 +1,8 @@
 package models
 
 import (
+	"time"
+
 	"gorm.io/gorm"
 )
 
@@ -27,4 +29,13 @@ type Seccion struct {
 	DistritoID  uint
 	MunicipioID uint
 	Tipo        uint
+}
+
+type Pusinex struct {
+	gorm.Model
+	ID           uint
+	SeccionID    uint
+	RevisionTime time.Time
+	Estado       int
+	Descripcion  string
 }

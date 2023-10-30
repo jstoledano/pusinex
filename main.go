@@ -73,7 +73,6 @@ func main() {
 
 	var distritosCSV []models.Distrito
 	for _, row := range data[1:] {
-		log.Println(row[0], row[1])
 		d, _ := strconv.ParseUint(row[0], 10, 32)
 		id := uint(d)
 		distritosCSV = append(distritosCSV, models.Distrito{ID: id, Distrito: id, Cabecera: row[1]})
@@ -91,22 +90,36 @@ func main() {
 			DoUpdates: clause.Assignments(map[string]interface{}{"id": dto.Distrito, "cabecera": dto.Cabecera}),
 		}).Create(&dto).Error; err != nil {
 			tx.Rollback()
-			log.Println("distritos -- ", err)
 		}
-		log.Println("distrito -- ", dto.Distrito, dto.Cabecera)
 	}
 	// Fin de la transacción
 	tx.Commit()
 
-	defer f.Close()
 	log.Println(f.Name())
 
-	apizaco := models.Municipio{ID: 3, Municipio: 3, Nombre: "APIZACO"}
-	secc38 := models.Seccion{ID: 38, Seccion: 38, DistritoID: 3, MunicipioID: 3, Tipo: 1}
+	// apizaco := models.Municipio{ID: 3, Municipio: 3, Nombre: "APIZACO"}
+	// secc38 := models.Seccion{ID: 38, Seccion: 38, DistritoID: 3, MunicipioID: 3, Tipo: 1}
 
-	db.Create(&apizaco)
-	db.Create(&secc38)
+	// db.Create(&apizaco)
+	// db.Create(&secc38)
 
-	log.Println(apizaco)
-	log.Println(secc38)
+	// log.Println(apizaco)
+	// log.Println(secc38)
+
+	log.Println("--------------------")
+
+	municipio := models.Table{
+		Name:    "municipio",
+		Headers: true,
+		Fields:  []string{"id", "municipio", "nombre"},
+		IdName:  "id",
+		IdCol:   0,
+	}
+
+	err = models.CargarDatos(db, "data/MUNICIPIO.txt", municipio)
+	if err != nil {
+		log.Println(err)
+	}
+
+	defer f.Close()
 }
