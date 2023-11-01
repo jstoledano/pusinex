@@ -24,23 +24,17 @@
     <tr>
       <th scope="col">Distrito</th>
       <th scope="col">Sección</th>
-      <th scope="col">Localidad</th>
       <th scope="col">Fecha</th>
       <th scope="col">Hojas</th>
       <th scope="col">Archivo</th>
     </tr>
     </thead>
     <tbody>
-    {% for localidad in municipio.localidad_set.all %}
-      {% for pusinex in localidad.pusinex_set.all %}
+    {% for seccion in municipio.seccion_set.all %}
+      {% for pusinex in seccion.pusinex_set.all %}
           <tr>
             <td>{{ pusinex.seccion.distrito.distrito|stringformat:"02d" }}</td>
             <td>{{ pusinex.seccion.seccion|stringformat:"04d" }}</td>
-            <td>
-              <a href="{% url 'localidad' pk=localidad.id %}">
-                {{ pusinex.localidad.localidad|stringformat:"04d"}} {{ pusinex.localidad.nombre }}
-              </a>
-            </td>
             <td>{{ pusinex.revision_set.latest.f_act }}</td>
             <td>{{ pusinex.revision_set.latest.hojas }}</td>
             <td><a href="{{ pusinex.revision_set.last.archivo.url }}">Descargar</a></td>

@@ -35,21 +35,15 @@
 <form class="form" action="{% url 'create' %}" method="POST" enctype="multipart/form-data">
   {% csrf_token %}
   <div class="row">
-    <div class="col mb-2">
+    <div class="col-md-8 mb-2">
       <label for="mpios">Municipio</label>
       <select name="mpios" id="mpios" class="form-select" aria-label="Selección de municipio">
         <option value="" text />
       </select>
     </div>
-  </div>
-  <div class="row">
     <div class="col-4 mb-4">
       <label for="secciones">Sección</label>
       <select name="seccion" required id="id_seccion" class="form-select"></select>
-    </div>
-    <div class="col-8 mb-4">
-      <label for="localidades">Localidades</label>
-      <select name="localidad" required id="id_localidad" class="form-select"></select>
     </div>
   </div>
   <hr>
@@ -84,6 +78,8 @@
 {% endblock content %}
 
 {% block react %}
+  <script src="https://unpkg.com/htmx.org@1.9.6" integrity="sha384-FhXw7b6AlE/jyjlZH5iHa/tTe9EpJ1Y55RjcgPbjeWMskSxZt1v9qkxLJWNJaGni" crossorigin="anonymous"></script>
+
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
   <script type="text/javascript">
     function pad (str, max) {

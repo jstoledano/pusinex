@@ -23,18 +23,19 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-class Index(FilterView):
+class Index(ListView):
     template_name = 'index.html'
-    model = Localidad
-    filterset_class = LocalidadFilter
+    model = Municipio
+    context_object_name = 'municipios'
+    # filterset_class = LocalidadFilter
 
-    def get_context_data(self, **kwargs):
-        context = super(Index, self).get_context_data(**kwargs)
-        context['filter'] = LocalidadFilter(
-            self.request.GET,
-            queryset=Localidad.objects.order_by('municipio', 'localidad').select_related('municipio'),
-        )
-        return context
+    # def get_context_data(self, **kwargs):
+    #     context = super(Index, self).get_context_data(**kwargs)
+    #     context['filter'] = LocalidadFilter(
+    #         self.request.GET,
+    #         queryset=Seccion.objects.order_by('municipio', 'seccion').select_related('municipio'),
+    #     )
+    #     return context
 
 
 class MunicipioAutoComplete(autocomplete.Select2QuerySetView):
@@ -75,11 +76,10 @@ class CreatePUSINEX(LoginRequiredMixin, CreateView):
         # Crea o busca un PUSINEX en la base de datos
         seccion = Seccion.objects.get(seccion=form.cleaned_data['seccion'])
         municipio = Municipio.objects.get(pk=seccion.municipio.id)
-        localidad = Localidad.objects.get(localidad=form.cleaned_data['localidad'], municipio=municipio)
         try:
-            pusinex = Pusinex.objects.get(seccion=seccion, localidad=localidad)
+            pusinex = Pusinex.objects.get(seccion=seccion)
         except Pusinex.DoesNotExist:
-            pusinex = Pusinex.objects.create(seccion=seccion, localidad=localidad, activo=True)
+            pusinex = Pusinex.objects.create(seccion=seccion, activo=True)
         # Crea una revisión de PUSINEX
         revision = form.save(commit=False)
         revision.user = self.request.user
@@ -88,7 +88,7 @@ class CreatePUSINEX(LoginRequiredMixin, CreateView):
         return super(CreatePUSINEX, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse('localidad', kwargs={'pk': self.object.pusinex.localidad.id})
+        return reverse('municipio', kwargs={'pk': self.object.pusinex.seccion.municipio.id})
 
 
 class Administration(TemplateView):
@@ -117,7 +117,7 @@ class LocalidadViewSet(viewsets.ModelViewSet):
 class PusinexViewSet(viewsets.ModelViewSet):
     queryset = Pusinex.objects.all()
     serializer_class = PusinexSerializer
-    filterset_fields = ['id', 'seccion__seccion', 'localidad__localidad', ]
+    filterset_fields = ['id', 'seccion__seccion', ]
 
 
 class LogoutView(TemplateView):

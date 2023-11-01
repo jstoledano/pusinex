@@ -85,16 +85,15 @@ class Localidad(models.Model):
 
 class Pusinex(models.Model):
     seccion = models.ForeignKey(Seccion, on_delete=models.CASCADE)
-    localidad = models.ForeignKey(Localidad, on_delete=models.CASCADE)
     activo = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = 'PUSINEX'
         verbose_name_plural = 'PUSINEXs'
-        ordering = ['seccion__distrito__distrito', 'seccion__seccion', 'localidad__localidad', ]
+        ordering = ['seccion__distrito__distrito', 'seccion__seccion', ]
 
     def __str__(self):
-        return f'{self.seccion.seccion:04} {self.localidad.localidad:04} {self.localidad.nombre}'
+        return f'{self.seccion.seccion:04}'
 
 
 # Función para subir archivos
@@ -104,8 +103,7 @@ def pusinex_file(p, file):
     orig = 'pusinex'
     distrito = p.pusinex.seccion.distrito.distrito
     seccion = p.pusinex.seccion.seccion
-    localidad = p.pusinex.localidad.localidad
-    nombre = f'29{distrito:02}{seccion:04}-{localidad:04}_rev{p.f_act:%Y%m%d}.{ext}'
+    nombre = f'29{distrito:02}{seccion:04}_rev{p.f_act:%Y%m%d}.{ext}'
     ruta = os.path.join(orig, f'{distrito:02}', nombre)
     return ruta
 
@@ -125,8 +123,7 @@ class Revision(models.Model):
     def __str__(self):
         d = self.pusinex.seccion.distrito.distrito
         s = self.pusinex.seccion.seccion
-        loc = self.pusinex.localidad.localidad
-        return f'29{d:02}{s:04}-{loc:04}_rev{self.f_act:%Y%m%d}'
+        return f'29{d:02}{s:04}_rev{self.f_act:%Y%m%d}'
 
     class Meta:
         get_latest_by = ["f_act", ]
