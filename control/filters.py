@@ -22,7 +22,6 @@ class LocalidadFilter(django_filters.FilterSet):
 
     def __init__(self, *args, **kwargs):
         super(LocalidadFilter, self).__init__(*args, **kwargs)
-        # self.form.initial['id_q'] = 'Hola'
         self.filters['q'].label = ''
         if self.data == {}:
             self.queryset = self.queryset.none()
@@ -33,8 +32,7 @@ class LocalidadFilter(django_filters.FilterSet):
             valor = int(value)
         except ValueError:
             return queryset.filter(
-                Q(nombre__icontains=value) |
-                Q(municipio__nombre__icontains=value)
+                Q(nombre__icontains=value) | Q(municipio__nombre__icontains=value)
             )
         return queryset.filter(municipio__seccion__seccion=valor)
 

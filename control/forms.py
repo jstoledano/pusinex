@@ -17,7 +17,6 @@ logger = logging.getLogger(__name__)
 
 class PUSINEXForm(forms.ModelForm):
     seccion = forms.IntegerField()
-    localidad = forms.IntegerField()
     f_act = forms.DateField()
     hojas = forms.IntegerField()
     archivo = forms.FileField()

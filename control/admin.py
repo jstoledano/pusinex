@@ -8,7 +8,7 @@ class RevisionInLine(admin.TabularInline):
 
 
 class PusinexAdmin(admin.ModelAdmin):
-    ordering = ['seccion', 'localidad']
+    ordering = ['seccion',]
     list_filter = ['seccion__distrito', 'seccion__municipio']
     inlines = [RevisionInLine]
 
@@ -24,14 +24,8 @@ class SeccionAdmin(admin.ModelAdmin):
     inlines = [PusinexInline]
 
 
-class LocalidadAdmin(admin.ModelAdmin):
-    ordering = ['municipio__municipio', 'localidad']
-    inlines = [PusinexInline]
-
-
 admin.site.register(Entidad)
 admin.site.register(Distrito)
 admin.site.register(Municipio)
 admin.site.register(Seccion, SeccionAdmin)
-admin.site.register(Localidad, LocalidadAdmin)
 admin.site.register(Pusinex, PusinexAdmin)

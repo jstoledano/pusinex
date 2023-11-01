@@ -46,8 +46,8 @@
     <tr>
       <th scope="col">#</th>
       <th scope="col" data-tablesort-type="int">Distrito</th>
+      <th scope="col">Municipio</th>
       <th scope="col" data-tablesort-type="int">Sección</th>
-      <th scope="col" data-tablesort-type="string">Localidad</th>
       <th scope="col">Actualización</th>
       <th scope="col">Hojas</th>
       <th scope="col">Archivo</th>
@@ -58,12 +58,8 @@
       <tr>
         <td class="text-body-secondary ">{{ forloop.counter|stringformat:"02d" }}</td>
         <td class="">{{ seccion.distrito.distrito|stringformat:"02d" }}</td>
+        <td class=""><a href="{% url 'municipio' seccion.municipio.id %}">{{ seccion.municipio }}</a></td>
         <td class="">{{ seccion.seccion|stringformat:"04d" }}</td>
-        <td>{% if seccion.pusinex_set.all.0.localidad.id %}
-          <a href="/localidad/{{ seccion.pusinex_set.all.0.localidad.id }}">
-            {{ seccion.pusinex_set.all.0.localidad.localidad|stringformat:"04d"}} {{ seccion.pusinex_set.all.0.localidad.nombre }}
-          {% endif %}</a>
-        </td>
         <td>{{ seccion.pusinex_set.all.0.revision_set.latest.f_act }}</td>
         <td>{{ seccion.pusinex_set.all.0.revision_set.latest.hojas }}</td>
         <td>{% if seccion.pusinex_set.all.0.revision_set.last.archivo.url %}
