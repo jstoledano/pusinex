@@ -15,11 +15,6 @@
 
 {% block content %}
 <div class="p-5">
-  <form method="get" class="mb-5 text-center">
-
-    <input type="submit" />
-  </form>
-
   <table class="table table-bordered table-hover table-striped table-condensed">
     <thead class="">
       <tr>
@@ -32,8 +27,8 @@
       {% for municipio in municipios %}
         <tr>
           <td><a href={% url 'municipio' municipio.id %}>{{ municipio }}</a></td>
-          <td>{{ municipio.seccion_set.count }}</td>
-          <td></td>
+          <td class="center">{{ municipio.seccion_set.count }}</td>
+          <td>{{ municipio.get_pusinex }}</td>
         </tr>
       {% endfor %}
     </tbody>

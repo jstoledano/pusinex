@@ -3,16 +3,13 @@ from django.db.models import Q
 from django.views import View
 from django.views.generic import TemplateView, DetailView, CreateView, ListView
 from django_filters.rest_framework import DjangoFilterBackend
-from django_filters.views import FilterView
 from django.urls import reverse, reverse_lazy
 import zipfile
-from django.http import HttpResponse, FileResponse
+from django.http import FileResponse
 import os
 from pathlib import Path
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import viewsets
-
-from control.filters import LocalidadFilter
 from control.forms import PUSINEXForm
 from control.models import Localidad, Municipio, Pusinex, Seccion, Revision
 from control.serializers import (LocalidadSerializer, MunicipioSerializer,
@@ -27,15 +24,12 @@ class Index(ListView):
     template_name = 'index.html'
     model = Municipio
     context_object_name = 'municipios'
-    # filterset_class = LocalidadFilter
 
-    # def get_context_data(self, **kwargs):
-    #     context = super(Index, self).get_context_data(**kwargs)
-    #     context['filter'] = LocalidadFilter(
-    #         self.request.GET,
-    #         queryset=Seccion.objects.order_by('municipio', 'seccion').select_related('municipio'),
-    #     )
-    #     return context
+    def get_queryset(self):
+        qs = Municipio.objects.all()
+        if self.request.GET.get('q'):
+            qs = qs.filter(Q(nombre__icontains=self.request.GET.get('q')))
+        return qs
 
 
 class MunicipioAutoComplete(autocomplete.Select2QuerySetView):
@@ -75,7 +69,6 @@ class CreatePUSINEX(LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         # Crea o busca un PUSINEX en la base de datos
         seccion = Seccion.objects.get(seccion=form.cleaned_data['seccion'])
-        municipio = Municipio.objects.get(pk=seccion.municipio.id)
         try:
             pusinex = Pusinex.objects.get(seccion=seccion)
         except Pusinex.DoesNotExist:
