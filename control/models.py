@@ -52,6 +52,9 @@ class Municipio(models.Model):
     def __str__(self):
         return f'{self.municipio:03} {self.nombre}'
 
+    def get_pusinex(self):
+        return self.seccion_set.filter(tipo__lt=4).count()
+
 
 class Seccion(models.Model):
     distrito = models.ForeignKey(Distrito, on_delete=models.CASCADE)
