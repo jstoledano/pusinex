@@ -137,7 +137,7 @@ seccionesVNM2024 = (
 queryVNM2023 = Seccion.objects.filter(seccion__in=seccionesVNM2023).order_by('distrito', 'seccion')
 pusinexVNM2023 = Pusinex.objects.filter(seccion__seccion__in=seccionesVNM2023)
 
-queryVNM2024 = Seccion.objects.filter(seccion__in=seccionesVNM2024).order_by('distrito', 'seccion')
+queryVNM2024 = Seccion.objects.filter(seccion__in=seccionesVNM2024, tipo__lt=4).order_by('distrito', 'seccion')
 pusinexVNM2024 = Pusinex.objects.filter(seccion__seccion__in=seccionesVNM2024)
 
 
