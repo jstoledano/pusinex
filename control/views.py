@@ -125,8 +125,28 @@ seccionesVNM2023 = (
     364, 384, 624, 397, 441, 442, 469, 626, 567, 392, 159, 151, 2,
     78, 85, 87, 89, 234, 242, 290, 297, 325, 336, 425, 511, 512,
     515, 575, 581, 589, 593, 597, 314, 551, 473, 142)
+
+seccionesVNM2024 = (
+    14, 19, 26, 635, 68, 100, 102, 107, 109, 191, 213, 217, 365, 403,
+    406, 421, 471, 484, 521, 530, 536, 543, 78, 88, 90, 165, 168, 220,
+    232, 240, 253, 256, 257, 299, 333, 336, 347, 437, 439, 440, 444,
+    446, 457, 464, 467, 626, 629, 509, 550, 556, 643, 295, 296, 126,
+    139, 141, 144, 145, 266, 271, 283, 348, 355, 356, 360, 622, 623,
+    639, 374, 375, 381, 382, 384, 561, 572, 597, 599, 154
+)
 queryVNM2023 = Seccion.objects.filter(seccion__in=seccionesVNM2023).order_by('distrito', 'seccion')
 pusinexVNM2023 = Pusinex.objects.filter(seccion__seccion__in=seccionesVNM2023)
+
+queryVNM2024 = Seccion.objects.filter(seccion__in=seccionesVNM2024).order_by('distrito', 'seccion')
+pusinexVNM2024 = Pusinex.objects.filter(seccion__seccion__in=seccionesVNM2024)
+
+
+class VNM2024(ListView):
+    model = Seccion
+
+    def get_queryset(self):
+        qs = queryVNM2024
+        return qs
 
 
 class VNM2023(ListView):
@@ -144,7 +164,7 @@ class VNMZipView(View):
         zip_name = Path('media', 'pusinex', f'pusinex_VNM_0{dto}.zip')
         zip_archive = zipfile.ZipFile(zip_name, mode='w', compression=zipfile.ZIP_DEFLATED, compresslevel=9)
         if dto:
-            for p in pusinexVNM2023.filter(seccion__distrito__distrito=dto):
+            for p in pusinexVNM2024.filter(seccion__distrito__distrito=dto):
                 files.append(Path(os.getcwd(), 'media', p.revision_set.latest().archivo.path))
         with zip_archive as archive:
             for file in files:
