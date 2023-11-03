@@ -50,6 +50,7 @@ class MunicipioDetail(DetailView):
     context_object_name = 'municipio'
     ordering = ['-seccion__seccion']
 
+    # TODO: Mostrar solo secciones activas
     def get_queryset(self):
         qs = super(MunicipioDetail, self).get_queryset()
         return qs.order_by('seccion__distrito', 'seccion__seccion')
