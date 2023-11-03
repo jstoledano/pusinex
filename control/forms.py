@@ -9,7 +9,7 @@
 
 
 from django import forms
-from control.models import Revision
+from control.models import Pusinex2
 import logging
 
 logger = logging.getLogger(__name__)
@@ -23,5 +23,5 @@ class PUSINEXForm(forms.ModelForm):
     observaciones = forms.CharField(widget=forms.Textarea, required=False)
 
     class Meta:
-        exclude = ('pusinex', 'user', )
-        model = Revision
+        exclude = ('user', )
+        model = Pusinex2

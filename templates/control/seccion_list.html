@@ -4,7 +4,7 @@
 {% block hero %}
   <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
     <h1 class="display-4 fw-normal"><i class="fa fa-map-signs"></i> Verificación Nacional Muestral</h1>
-    <p class="fs-2 text-muted">Secciones en VNM 2023</p>
+    <p class="fs-2 text-muted">Secciones en VNM 2024</p>
   </div>
 {% endblock hero %}
 
@@ -58,12 +58,12 @@
       <tr>
         <td class="text-body-secondary ">{{ forloop.counter|stringformat:"02d" }}</td>
         <td class="">{{ seccion.distrito.distrito|stringformat:"02d" }}</td>
-        <td class=""><a href="{% url 'municipio' seccion.municipio.id %}">{{ seccion.municipio }}</a></td>
+        <td class=""><a href="{% url 'municipio' seccion.municipio.municipio %}">{{ seccion.municipio }}</a></td>
         <td class="">{{ seccion.seccion|stringformat:"04d" }}</td>
-        <td>{{ seccion.pusinex_set.all.0.revision_set.latest.f_act }}</td>
-        <td>{{ seccion.pusinex_set.all.0.revision_set.latest.hojas }}</td>
-        <td>{% if seccion.pusinex_set.all.0.revision_set.last.archivo.url %}
-          <a href="{{ seccion.pusinex_set.all.0.revision_set.last.archivo.url }}">Descargar</a>
+        <td>{{ seccion.pusinex2_set.latest.f_act }}</td>
+        <td>{{ seccion.pusinex2_set.latest.hojas }}</td>
+        <td>{% if seccion.pusinex2_set.latest.archivo.url %}
+          <a href="{{ seccion.pusinex2_set.latest.archivo.url }}">Descargar</a>
         {% endif %}</td>
       </tr>
     {% endfor %}

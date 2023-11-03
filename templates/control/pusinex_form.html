@@ -35,24 +35,15 @@
 <form class="form" action="{% url 'create' %}" method="POST" enctype="multipart/form-data">
   {% csrf_token %}
   <div class="row">
-    <div class="col-md-8 mb-2">
-      <label for="mpios">Municipio</label>
-      <select name="mpios" id="mpios" class="form-select" aria-label="Selección de municipio">
-        <option value="" text />
-      </select>
-    </div>
-    <div class="col-4 mb-4">
+    <div class="col-3 mb-4">
       <label for="secciones">Sección</label>
-      <select name="seccion" required id="id_seccion" class="form-select"></select>
+      <input type="number" name="seccion" required id="id_seccion" class="form-select"></input>
     </div>
-  </div>
-  <hr>
-  <div class="row mb-4">
-    <div class="col-6">
+    <div class="col-5">
       <label for="id_f_act">Fecha de Actualización</label>
       <input type="date" name="f_act" required id="id_f_act" class="form-control" />
     </div>
-    <div class="col-6">
+    <div class="col-3">
       <label for="id_hojas">Hojas</label>
       <input type="number" name="hojas" required id="id_hojas" class="form-control" />
     </div>

@@ -141,8 +141,13 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 NOTEBOOK_ARGUMENTS = [
-    '--ip', '0.0.0.0',
+    '--ip', 'localhost',
     '--port', '8888'
 ]
 
 LOGIN_REDIRECT_URL = '/'
+
+if DEBUG:
+    os.environ["DJANGO_ALLOW_ASYNC_UNSAFE"] = "true"
+    DJANGO_ALLOW_ASYNC_UNSAFE = True
+    PYDEVD_DISABLE_FILE_VALIDATION = 1
