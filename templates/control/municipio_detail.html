@@ -23,6 +23,7 @@
     <thead>
     <tr>
       <th scope="col">Distrito</th>
+      <th scope="col">Municipio</th>
       <th scope="col">Sección</th>
       <th scope="col">Fecha</th>
       <th scope="col">Hojas</th>
@@ -31,15 +32,17 @@
     </thead>
     <tbody>
     {% for seccion in municipio.seccion_set.all %}
-      {% for pusinex in seccion.pusinex_set.all %}
-          <tr>
-            <td>{{ pusinex.seccion.distrito.distrito|stringformat:"02d" }}</td>
-            <td>{{ pusinex.seccion.seccion|stringformat:"04d" }}</td>
-            <td>{{ pusinex.revision_set.latest.f_act }}</td>
-            <td>{{ pusinex.revision_set.latest.hojas }}</td>
-            <td><a href="{{ pusinex.revision_set.last.archivo.url }}">Descargar</a></td>
-          </tr>
-        {% endfor %}
+      <tr>
+        <td>{{ seccion.distrito.distrito|stringformat:"02d" }}</td>
+        <td>{{ seccion.municipio }}</td>
+        <td>{{ seccion.seccion|stringformat:"04d" }}</td>
+        <td>{{ seccion.pusinex2_set.latest.f_act }}</td>
+        <td>{{ seccion.pusinex2_set.latest.hojas }}</td>
+        <td>{% if seccion.pusinex2_set.latest.archivo.url  %}
+          <a href="{{ seccion.pusinex2_set.latest.archivo.url }}">Descargar</a>
+          {% endif %}
+        </td>
+      </tr>
     {% endfor %}
     </tbody>
   </table>

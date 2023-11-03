@@ -2,9 +2,7 @@ from rest_framework import serializers
 from control.models import (
     Municipio,
     Seccion,
-    Localidad,
-    Pusinex,
-    Revision
+    Pusinex2,
 )
 
 
@@ -23,30 +21,16 @@ class SeccionSerializer(serializers.ModelSerializer):
         fields = '__all__'
         depth = 2
 
-
-class LocalidadSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = Localidad
-        fields = '__all__'
-        depth = 2
-
-
-class RevisionSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Revision
-        fields = '__all__'
+    def get_rev(self, obj):
+        revision = Seccion.objects.filter(pusinex=obj).last()
+        serializer = SeccionSerializer(revision, many=False)
+        return serializer.data
 
 
 class PusinexSerializer(serializers.ModelSerializer):
     rev = serializers.SerializerMethodField()
 
     class Meta:
-        model = Pusinex
+        model = Pusinex2
         fields = '__all__'
         depth = 3
-
-    def get_rev(self, obj):
-        revision = Revision.objects.filter(pusinex=obj).last()
-        serializer = RevisionSerializer(revision, many=False)
-        return serializer.data

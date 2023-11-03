@@ -1,20 +1,9 @@
 from django.contrib import admin
-from .models import Entidad, Distrito, Municipio, Seccion, Localidad, Pusinex, Revision
-
-
-class RevisionInLine(admin.TabularInline):
-    model = Revision
-    extra = 1
-
-
-class PusinexAdmin(admin.ModelAdmin):
-    ordering = ['seccion',]
-    list_filter = ['seccion__distrito', 'seccion__municipio']
-    inlines = [RevisionInLine]
+from .models import Entidad, Distrito, Municipio, Seccion, Pusinex2
 
 
 class PusinexInline(admin.TabularInline):
-    model = Pusinex
+    model = Pusinex2
     extra = 1
 
 
@@ -28,4 +17,3 @@ admin.site.register(Entidad)
 admin.site.register(Distrito)
 admin.site.register(Municipio)
 admin.site.register(Seccion, SeccionAdmin)
-admin.site.register(Pusinex, PusinexAdmin)

@@ -26,7 +26,7 @@
     <tbody>
       {% for municipio in municipios %}
         <tr>
-          <td><a href={% url 'municipio' municipio.id %}>{{ municipio }}</a></td>
+          <td><a href={% url 'municipio' municipio.municipio %}>{{ municipio }}</a></td>
           <td class="center">{{ municipio.seccion_set.count }}</td>
           <td>{{ municipio.get_pusinex }}</td>
         </tr>

@@ -11,8 +11,8 @@ from pathlib import Path
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import viewsets
 from control.forms import PUSINEXForm
-from control.models import Localidad, Municipio, Pusinex, Seccion, Revision
-from control.serializers import (LocalidadSerializer, MunicipioSerializer,
+from control.models import Municipio, Pusinex2, Seccion
+from control.serializers import (MunicipioSerializer,
                                  PusinexSerializer, SeccionSerializer)
 
 import logging
@@ -41,24 +41,24 @@ class MunicipioAutoComplete(autocomplete.Select2QuerySetView):
 
 
 class PusinexDetail(DetailView):
-    model = Pusinex
+    model = Pusinex2
     context_object_name = 'pusinex'
-
-
-class LocalidadDetail(DetailView):
-    model = Localidad
-    context_object_name = 'localidad'
 
 
 class MunicipioDetail(DetailView):
     model = Municipio
     context_object_name = 'municipio'
+    ordering = ['-seccion__seccion']
+
+    def get_queryset(self):
+        qs = super(MunicipioDetail, self).get_queryset()
+        return qs.order_by('seccion__distrito', 'seccion__seccion')
 
 
 class CreatePUSINEX(LoginRequiredMixin, CreateView):
     template_name = 'control/pusinex_form.html'
     form_class = PUSINEXForm
-    model = Revision
+    model = Pusinex2
     login_url = reverse_lazy('login')
     redirect_field_name = 'next'
 
@@ -70,9 +70,9 @@ class CreatePUSINEX(LoginRequiredMixin, CreateView):
         # Crea o busca un PUSINEX en la base de datos
         seccion = Seccion.objects.get(seccion=form.cleaned_data['seccion'])
         try:
-            pusinex = Pusinex.objects.get(seccion=seccion)
-        except Pusinex.DoesNotExist:
-            pusinex = Pusinex.objects.create(seccion=seccion, activo=True)
+            pusinex = Pusinex2.objects.get(seccion=seccion)
+        except Pusinex2.DoesNotExist:
+            pusinex = Pusinex2.objects.create(seccion=seccion, activo=True)
         # Crea una revisión de PUSINEX
         revision = form.save(commit=False)
         revision.user = self.request.user
@@ -100,15 +100,8 @@ class SeccionViewSet(viewsets.ModelViewSet):
     filterset_fields = ['municipio', 'seccion']
 
 
-class LocalidadViewSet(viewsets.ModelViewSet):
-    queryset = Localidad.objects.all()
-    serializer_class = LocalidadSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['municipio', ]
-
-
 class PusinexViewSet(viewsets.ModelViewSet):
-    queryset = Pusinex.objects.all()
+    queryset = Pusinex2.objects.all()
     serializer_class = PusinexSerializer
     filterset_fields = ['id', 'seccion__seccion', ]
 
@@ -135,10 +128,11 @@ seccionesVNM2024 = (
     639, 374, 375, 381, 382, 384, 561, 572, 597, 599, 154
 )
 queryVNM2023 = Seccion.objects.filter(seccion__in=seccionesVNM2023).order_by('distrito', 'seccion')
-pusinexVNM2023 = Pusinex.objects.filter(seccion__seccion__in=seccionesVNM2023)
+pusinexVNM2023 = Pusinex2.objects.filter(seccion__seccion__in=seccionesVNM2023)
 
-queryVNM2024 = Seccion.objects.filter(seccion__in=seccionesVNM2024, tipo__lt=4).order_by('distrito', 'seccion')
-pusinexVNM2024 = Pusinex.objects.filter(seccion__seccion__in=seccionesVNM2024)
+queryVNM2024 = Seccion.objects.filter(seccion__in=seccionesVNM2024, tipo__lt=4)\
+    .order_by('distrito', 'municipio', 'seccion')
+pusinexVNM2024 = Pusinex2.objects.filter(seccion__seccion__in=seccionesVNM2024)
 
 
 class VNM2024(ListView):

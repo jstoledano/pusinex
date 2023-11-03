@@ -17,8 +17,20 @@ CAT_CABECERA = (
 )
 
 
+# Función para subir archivos
+def pusinex_file(p, file):
+    import os.path
+    ext = file.split('.')[-1]
+    orig = 'pusinex'
+    distrito = p.pusinex.seccion.distrito.distrito
+    seccion = p.pusinex.seccion.seccion
+    nombre = f'29{distrito:02}{seccion:04}_rev{p.f_act:%Y%m%d}.{ext}'
+    ruta = os.path.join(orig, f'{distrito:02}', nombre)
+    return ruta
+
+
 class Entidad(models.Model):
-    entidad = models.PositiveSmallIntegerField()
+    entidad = models.PositiveSmallIntegerField(primary_key=True)
     nombre = models.TextField()
 
     class Meta:
@@ -30,7 +42,7 @@ class Entidad(models.Model):
 
 class Distrito(models.Model):
     entidad = models.ForeignKey(Entidad, on_delete=models.CASCADE)
-    distrito = models.PositiveSmallIntegerField()
+    distrito = models.PositiveSmallIntegerField(primary_key=True)
     cabecera = models.TextField()
 
     def __str__(self):
@@ -42,7 +54,7 @@ class Distrito(models.Model):
 
 class Municipio(models.Model):
     entidad = models.ForeignKey(Entidad, on_delete=models.CASCADE)
-    municipio = models.PositiveSmallIntegerField()
+    municipio = models.PositiveSmallIntegerField(primary_key=True)
     nombre = models.TextField()
 
     class Meta:
@@ -59,7 +71,7 @@ class Municipio(models.Model):
 class Seccion(models.Model):
     distrito = models.ForeignKey(Distrito, on_delete=models.CASCADE)
     municipio = models.ForeignKey(Municipio, on_delete=models.CASCADE)
-    seccion = models.PositiveSmallIntegerField()
+    seccion = models.PositiveSmallIntegerField(primary_key=True)
     tipo = models.PositiveSmallIntegerField(choices=CAT_TIPO)
 
     class Meta:
@@ -70,63 +82,25 @@ class Seccion(models.Model):
         return f'{self.distrito.distrito:02} {self.municipio.municipio:03} {self.seccion:04}'
 
 
-class Localidad(models.Model):
-    municipio = models.ForeignKey(Municipio, on_delete=models.CASCADE)
-    localidad = models.PositiveSmallIntegerField()
-    nombre = models.TextField(max_length=150)
-    tipo = models.PositiveSmallIntegerField(choices=CAT_TIPO)
-    cabecera = models.PositiveSmallIntegerField(choices=CAT_CABECERA, null=True)
-
-    class Meta:
-        verbose_name = 'Localidad'
-        verbose_name_plural = 'Localidades'
-        ordering = ['municipio__municipio', 'localidad', ]
-
-    def __str__(self):
-        return f'{self.municipio.municipio:03} {self.localidad:04} {self.nombre}'
-
-
-class Pusinex(models.Model):
+class Pusinex2(models.Model):
     seccion = models.ForeignKey(Seccion, on_delete=models.CASCADE)
-    activo = models.BooleanField(default=True)
-
-    class Meta:
-        verbose_name = 'PUSINEX'
-        verbose_name_plural = 'PUSINEXs'
-        ordering = ['seccion__distrito__distrito', 'seccion__seccion', ]
-
-    def __str__(self):
-        return f'{self.seccion.seccion:04}'
-
-
-# Función para subir archivos
-def pusinex_file(p, file):
-    import os.path
-    ext = file.split('.')[-1]
-    orig = 'pusinex'
-    distrito = p.pusinex.seccion.distrito.distrito
-    seccion = p.pusinex.seccion.seccion
-    nombre = f'29{distrito:02}{seccion:04}_rev{p.f_act:%Y%m%d}.{ext}'
-    ruta = os.path.join(orig, f'{distrito:02}', nombre)
-    return ruta
-
-
-class Revision(models.Model):
-    pusinex = models.ForeignKey(Pusinex, on_delete=models.CASCADE)
     f_act = models.DateField()
     hojas = models.PositiveSmallIntegerField()
     observaciones = models.TextField(blank=True, null=True)
     archivo = models.FileField(upload_to=pusinex_file, blank=True, null=True)
-
     # Trazabilidad
     user = models.ForeignKey(User, editable=False, on_delete=models.CASCADE)
     created = models.DateTimeField(auto_now_add=True)
     updated = models.DateTimeField(auto_now=True)
 
-    def __str__(self):
-        d = self.pusinex.seccion.distrito.distrito
-        s = self.pusinex.seccion.seccion
-        return f'29{d:02}{s:04}_rev{self.f_act:%Y%m%d}'
-
     class Meta:
+        verbose_name = 'PUSINEX'
+        verbose_name_plural = 'PUSINEXs'
+        ordering = ['seccion__distrito__distrito', 'seccion__municipio__municipio', 'seccion__seccion', ]
         get_latest_by = ["f_act", ]
+
+    def __str__(self):
+        d = self.seccion.distrito.distrito
+        m = self.seccion.municipio.municipio
+        s = self.seccion.seccion
+        return f'29{d:02}{m:02}{s:04}_rev{self.f_act:%Y%m%d}'
