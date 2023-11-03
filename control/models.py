@@ -73,6 +73,7 @@ class Seccion(models.Model):
     municipio = models.ForeignKey(Municipio, on_delete=models.CASCADE)
     seccion = models.PositiveSmallIntegerField(primary_key=True)
     tipo = models.PositiveSmallIntegerField(choices=CAT_TIPO)
+    activa = models.BooleanField(default=True)
 
     class Meta:
         verbose_name = 'Sección'
