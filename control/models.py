@@ -22,8 +22,8 @@ def pusinex_file(p, file):
     import os.path
     ext = file.split('.')[-1]
     orig = 'pusinex'
-    distrito = p.pusinex.seccion.distrito.distrito
-    seccion = p.pusinex.seccion.seccion
+    distrito = p.seccion.distrito.distrito
+    seccion = p.seccion.seccion
     nombre = f'29{distrito:02}{seccion:04}_rev{p.f_act:%Y%m%d}.{ext}'
     ruta = os.path.join(orig, f'{distrito:02}', nombre)
     return ruta

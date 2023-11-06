@@ -19,5 +19,12 @@
       <jdbc-url>jdbc:sqlite:C:\Users\javier.sanchezt\Projects\pusinex-backend-python\db.sqlite3</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="pusinex@localhost" uuid="0f45b2e2-3834-43bf-99b3-fdef85a2a52f">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/pusinex</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>

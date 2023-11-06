@@ -6,6 +6,7 @@ from control.urls import router
 from django.views.static import serve
 
 urlpatterns = [
+    path("select2/", include("django_select2.urls")),
     path('acceso/', include('django.contrib.auth.urls')),
     path('admin/', admin.site.urls),
     path('api/', include((router.urls, 'pusinex'))),
