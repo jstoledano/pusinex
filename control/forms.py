@@ -18,8 +18,12 @@ import logging
 logger = logging.getLogger(__name__)
 
 
+
 class PUSINEXForm(forms.ModelForm):
-    seccion = forms.ModelChoiceField(queryset=Seccion.objects.all().order_by('seccion'))
+    seccion = forms.ModelChoiceField(
+        queryset=Seccion.objects.filter(activa=True).order_by('seccion'),
+        label='Sección',
+    )
     f_act = forms.DateField(label='Fecha de Actualización', widget=forms.DateInput(attrs={'type': 'date'}))
     hojas = forms.IntegerField(min_value=1)
     archivo = forms.FileField()
