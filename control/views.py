@@ -1,9 +1,10 @@
 from dal import autocomplete
 from django.db.models import Q
 from django.views import View
-from django.views.generic import TemplateView, DetailView, CreateView, ListView
+from django.views.generic import TemplateView, DetailView, ListView, CreateView
 from django_filters.rest_framework import DjangoFilterBackend
 from django.urls import reverse, reverse_lazy
+from django.shortcuts import get_object_or_404, redirect
 import zipfile
 from django.http import FileResponse
 import os
@@ -45,15 +46,18 @@ class PusinexDetail(DetailView):
     context_object_name = 'pusinex'
 
 
-class MunicipioDetail(DetailView):
-    model = Municipio
-    context_object_name = 'municipio'
-    ordering = ['-seccion__seccion']
+class MunicipioDetail(ListView):
+    context_object_name = 'secciones'
+    template_name = 'control/municipio_detail.html'
 
-    # TODO: Mostrar solo secciones activas
+    def get_context_data(self, **kwargs):
+        context = super(MunicipioDetail, self).get_context_data(**kwargs)
+        context['municipio'] = Municipio.objects.get(pk=self.kwargs.get('pk'))
+        return context
+
     def get_queryset(self):
-        qs = super(MunicipioDetail, self).get_queryset()
-        return qs.order_by('seccion__distrito', 'seccion__seccion')
+        qs = Seccion.objects.filter(municipio=self.kwargs.get('pk'), activa=True).order_by('distrito', 'seccion')
+        return qs
 
 
 class CreatePUSINEX(LoginRequiredMixin, CreateView):
@@ -68,21 +72,13 @@ class CreatePUSINEX(LoginRequiredMixin, CreateView):
         return super(CreatePUSINEX, self).form_invalid(form)
 
     def form_valid(self, form):
-        # Crea o busca un PUSINEX en la base de datos
-        seccion = Seccion.objects.get(seccion=form.cleaned_data['seccion'])
-        try:
-            pusinex = Pusinex2.objects.get(seccion=seccion)
-        except Pusinex2.DoesNotExist:
-            pusinex = Pusinex2.objects.create(seccion=seccion, activo=True)
-        # Crea una revisión de PUSINEX
         revision = form.save(commit=False)
         revision.user = self.request.user
-        revision.pusinex = pusinex
         revision.save()
         return super(CreatePUSINEX, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse('municipio', kwargs={'pk': self.object.pusinex.seccion.municipio.id})
+        return reverse('municipio', kwargs={'pk': self.object.seccion.municipio_id})
 
 
 class Administration(TemplateView):

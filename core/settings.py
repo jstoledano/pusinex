@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'crispy_forms',
     "crispy_bootstrap5",
+    'django_select2',
     'control.apps.ControlConfig',
 ]
 

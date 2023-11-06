@@ -31,7 +31,7 @@
     </tr>
     </thead>
     <tbody>
-    {% for seccion in municipio.seccion_set.all %}
+    {% for seccion in secciones %}
       <tr>
         <td>{{ seccion.distrito.distrito|stringformat:"02d" }}</td>
         <td>{{ seccion.municipio }}</td>
