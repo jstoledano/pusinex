@@ -18,7 +18,6 @@ import logging
 logger = logging.getLogger(__name__)
 
 
-
 class PUSINEXForm(forms.ModelForm):
     seccion = forms.ModelChoiceField(
         queryset=Seccion.objects.filter(activa=True).order_by('seccion'),
