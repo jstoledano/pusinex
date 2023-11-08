@@ -19,10 +19,10 @@ logger = logging.getLogger(__name__)
 
 
 class PUSINEXForm(forms.ModelForm):
-    seccion = forms.ModelChoiceField(
-        queryset=Seccion.objects.filter(activa=True).order_by('seccion'),
-        label='Sección',
-    )
+    municipio = forms.IntegerField(min_value=1, max_value=60,
+                                   widget=forms.Select(attrs={'class': 'select form-select'}))
+    seccion = forms.IntegerField(min_value=1, max_value=645,
+                                 widget=forms.Select(attrs={'class': 'select form-select'}))
     f_act = forms.DateField(label='Fecha de Actualización', widget=forms.DateInput(attrs={'type': 'date'}))
     hojas = forms.IntegerField(min_value=1)
     archivo = forms.FileField()
@@ -37,7 +37,12 @@ class PUSINEXForm(forms.ModelForm):
         self.helper = FormHelper()
         self.helper.layout = Layout (
             Div(
-                Field('seccion', wrapper_class='col-3 mb-4'),
+            Field('municipio', wrapper_class='col-5'),
+                Field('seccion', wrapper_class='col-2 mb-4'),
+                css_class='row'
+            ),
+            Div(
+
                 Field('f_act', wrapper_class='col-4'),
                 Field('hojas', wrapper_class='col-3'),
                 css_class='row'
@@ -59,3 +64,11 @@ class PUSINEXForm(forms.ModelForm):
                 css_class='modal-footer'
             )
         )
+
+    def clean_seccion(self):
+        seccion_id = int(self.cleaned_data['seccion'])
+        try:
+            seccion_instance = Seccion.objects.get(seccion=seccion_id)
+        except Seccion.DoesNotExist:
+            raise forms.ValidationError("La sección especificada no existe")
+        return seccion_instance

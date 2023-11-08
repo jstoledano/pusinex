@@ -4,7 +4,7 @@ from django.views import View
 from django.views.generic import TemplateView, DetailView, ListView, CreateView
 from django_filters.rest_framework import DjangoFilterBackend
 from django.urls import reverse, reverse_lazy
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404
 import zipfile
 from django.http import FileResponse
 import os
