@@ -11,7 +11,7 @@ from pathlib import Path
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import viewsets
 from control.forms import PUSINEXForm
-from control.models import Municipio, Pusinex2, Seccion
+from control.models import Municipio, Pusinex2, Seccion, Distrito
 from control.serializers import (MunicipioSerializer,
                                  PusinexSerializer, SeccionSerializer)
 
@@ -22,13 +22,11 @@ logger = logging.getLogger(__name__)
 
 class Index(ListView):
     template_name = 'index.html'
-    model = Municipio
-    context_object_name = 'municipios'
+    model = Seccion
+    context_object_name = 'secciones'
 
     def get_queryset(self):
-        qs = Municipio.objects.all()
-        if self.request.GET.get('q'):
-            qs = qs.filter(Q(nombre__icontains=self.request.GET.get('q')))
+        qs = Seccion.objects.filter(activa=True).order_by('distrito', 'municipio', 'seccion')
         return qs
 
 
