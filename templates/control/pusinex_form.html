@@ -32,18 +32,15 @@
     </div>
   </div>
 
-
   <form
     class="form"
     action="{% url 'create' %}"
     method="POST"
     enctype="multipart/form-data">
-    {% csrf_token %}
-    {% crispy form %}
-</form>
+      {% csrf_token %}
+      {% crispy form %}
+  </form>
 {% endblock content %}
-
-
 
 {% block react %}
   <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.3/dist/jquery.min.js"></script>
@@ -53,6 +50,23 @@
           return str.length < max ? pad("0" + str, max) : str;
       }
 
+      $(document).ready(function() {
+          // Realiza la petición AJAX al endpoint de secciones
+          $.ajax({
+              type: "GET",
+              url: "/api/seccion/?municipio=1",
+              data: {'csrfmiddlewaretoken': '{{csrf_token}}'},
+              success: function (data) {
+                  $.each(data, function(idx, s){
+                      $("#id_seccion").append($('<option />', {
+                          value: s.seccion,
+                          text: pad(s.seccion, 4)
+                      }));
+                  })
+              }
+          });
+      });
+
       $.ajax({
           type: "GET",
           url: "/api/municipio/",
@@ -61,7 +75,6 @@
           },
           success: function (data) {
               $.each(data, function(idx, m){
-                  console.log(idx, m.municipio, m.nombre)
                   $("#id_municipio").append($('<option />', {
                       value: m.municipio,
                       text: m.nombre
