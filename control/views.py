@@ -4,7 +4,6 @@ from django.views import View
 from django.views.generic import TemplateView, DetailView, ListView, CreateView
 from django_filters.rest_framework import DjangoFilterBackend
 from django.urls import reverse, reverse_lazy
-from django.shortcuts import get_object_or_404
 import zipfile
 from django.http import FileResponse
 import os
@@ -91,7 +90,7 @@ class MunicipioViewSet(viewsets.ModelViewSet):
 
 
 class SeccionViewSet(viewsets.ModelViewSet):
-    queryset = Seccion.objects.all()
+    queryset = Seccion.objects.filter(activa=True).order_by('distrito', 'municipio', 'seccion')
     serializer_class = SeccionSerializer
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ['municipio', 'seccion']
