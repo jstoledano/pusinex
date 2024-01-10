@@ -14,25 +14,32 @@
 {% endblock hero %}
 
 {% block content %}
-<div class="p-5">
-  <table class="table table-bordered table-hover table-striped table-condensed">
-    <thead class="">
-      <tr>
-        <th>Municipio</th>
-        <th>Secciones</th>
-        <th>PUSINEXes</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for municipio in municipios %}
-        <tr>
-          <td><a href={% url 'municipio' municipio.municipio %}>{{ municipio }}</a></td>
-          <td class="center">{{ municipio.seccion_set.count }}</td>
-          <td>{{ municipio.get_pusinex }}</td>
-        </tr>
-      {% endfor %}
-    </tbody>
-  </table>
 
-</div>
+
+
+{% for seccion in secciones %}
+  {% ifchanged seccion.distrito %}
+    <div>
+     <table class="table table-bordered table-hover table-striped table-condensed">
+       <thead class="">
+         <tr>
+           <th>Distrito</th>
+           <th>Municipio</th>
+           <th>Secciones</th>
+         </tr>
+       </thead>
+     <tbody>
+    {% endifchanged %}
+    {% ifchanged seccion.municipio %}
+      <tr>
+        <td class="text-center">0{{ seccion.distrito.distrito }}</td>
+        <td><a href="{% url 'municipio' seccion.municipio.municipio %}">{{ seccion.municipio.municipio|stringformat:"03d" }} {{ seccion.municipio.nombre }}</a></td>
+        <td class="text-right">{{ seccion.municipio.seccion_set.count }}</td>
+      </tr>
+     {% endifchanged %}
+{% endfor %}
+      </tbody>
+      </table>
+      </div>
+
 {% endblock content %}

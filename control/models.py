@@ -79,6 +79,7 @@ class Seccion(models.Model):
     class Meta:
         verbose_name = 'Sección'
         verbose_name_plural = 'Secciones'
+        ordering = ['distrito__distrito', 'municipio__municipio', 'seccion', ]
 
     def __str__(self):
         return f'{self.distrito.distrito:02} {self.municipio.municipio:03} {self.seccion:04}'
