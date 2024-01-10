@@ -10,6 +10,8 @@ import os
 from pathlib import Path
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import viewsets
+
+import models
 from control.forms import PUSINEXForm
 from control.models import Municipio, Pusinex2, Seccion, Distrito
 from control.serializers import (MunicipioSerializer,
@@ -124,7 +126,7 @@ seccionesVNM2024 = (
 queryVNM2023 = Seccion.objects.filter(seccion__in=seccionesVNM2023).order_by('distrito', 'seccion')
 pusinexVNM2023 = Pusinex2.objects.filter(seccion__seccion__in=seccionesVNM2023)
 
-queryVNM2024 = Seccion.objects.filter(seccion__in=seccionesVNM2024, tipo__lt=4)\
+queryVNM2024 = Seccion.objects.filter(seccion__in=seccionesVNM2024, tipo__lt=4, activa=True)\
     .order_by('distrito', 'municipio', 'seccion')
 pusinexVNM2024 = Pusinex2.objects.filter(seccion__seccion__in=seccionesVNM2024)
 
@@ -154,6 +156,23 @@ class VNMZipView(View):
         if dto:
             for p in pusinexVNM2024.filter(seccion__distrito__distrito=dto):
                 files.append(Path(os.getcwd(), 'media', p.revision_set.latest().archivo.path))
+        with zip_archive as archive:
+            for file in files:
+                archive.write(file, arcname=Path(file).name)
+        return FileResponse(open(zip_name, 'rb'))
+
+
+class PUSINEXZip(View):
+    @staticmethod
+    def get(request):
+        files = []
+        zip_name = Path('media', 'pusinex', '29_pusinex.zip')
+        zip_archive = zipfile.ZipFile(zip_name, mode='w', compression=zipfile.ZIP_DEFLATED, compresslevel=9)
+        for p in models.Pusinex2.objects.all():
+            try:
+                files.append(Path(os.getcwd(), 'media', p.revision_set.latest().archivo.path))
+            except:
+                pass
         with zip_archive as archive:
             for file in files:
                 archive.write(file, arcname=Path(file).name)
