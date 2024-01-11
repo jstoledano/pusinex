@@ -11,10 +11,9 @@ from pathlib import Path
 from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import viewsets
 
-import models
-from control.forms import PUSINEXForm
-from control.models import Municipio, Pusinex2, Seccion, Distrito
-from control.serializers import (MunicipioSerializer,
+from .forms import PUSINEXForm
+from .models import Municipio, Pusinex2, Seccion
+from .serializers import (MunicipioSerializer,
                                  PusinexSerializer, SeccionSerializer)
 
 import logging
