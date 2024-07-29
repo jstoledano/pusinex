@@ -60,10 +60,10 @@
         <td class="">{{ seccion.distrito.distrito|stringformat:"02d" }}</td>
         <td class=""><a href="{% url 'municipio' seccion.municipio.municipio %}">{{ seccion.municipio }}</a></td>
         <td class="">{{ seccion.seccion|stringformat:"04d" }}</td>
-        <td>{{ seccion.pusinex2_set.latest.f_act }}</td>
-        <td>{{ seccion.pusinex2_set.latest.hojas }}</td>
-        <td>{% if seccion.pusinex2_set.latest.archivo.url %}
-          <a href="{{ seccion.pusinex2_set.latest.archivo.url }}">Descargar</a>
+        <td>{{ seccion.pusinex_set.latest.f_act }}</td>
+        <td>{{ seccion.pusinex_set.latest.hojas }}</td>
+        <td>{% if seccion.pusinex_set.latest.archivo.url %}
+          <a href="{{ seccion.pusinex_set.latest.archivo.url }}">Descargar</a>
         {% endif %}</td>
       </tr>
     {% endfor %}
