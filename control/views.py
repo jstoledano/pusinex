@@ -12,7 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from rest_framework import viewsets
 
 from .forms import PUSINEXForm
-from .models import Municipio, Pusinex2, Seccion
+from .models import Municipio, Pusinex, Seccion
 from .serializers import (MunicipioSerializer,
                                  PusinexSerializer, SeccionSerializer)
 
@@ -40,7 +40,7 @@ class MunicipioAutoComplete(autocomplete.Select2QuerySetView):
 
 
 class PusinexDetail(DetailView):
-    model = Pusinex2
+    model = Pusinex
     context_object_name = 'pusinex'
 
 
@@ -61,7 +61,7 @@ class MunicipioDetail(ListView):
 class CreatePUSINEX(LoginRequiredMixin, CreateView):
     template_name = 'control/pusinex_form.html'
     form_class = PUSINEXForm
-    model = Pusinex2
+    model = Pusinex
     login_url = reverse_lazy('login')
     redirect_field_name = 'next'
 
@@ -96,7 +96,7 @@ class SeccionViewSet(viewsets.ModelViewSet):
 
 
 class PusinexViewSet(viewsets.ModelViewSet):
-    queryset = Pusinex2.objects.all()
+    queryset = Pusinex.objects.all()
     serializer_class = PusinexSerializer
     filterset_fields = ['id', 'seccion__seccion', ]
 
@@ -123,11 +123,11 @@ seccionesVNM2024 = (
     639, 374, 375, 381, 382, 384, 561, 572, 597, 599, 154
 )
 queryVNM2023 = Seccion.objects.filter(seccion__in=seccionesVNM2023).order_by('distrito', 'seccion')
-pusinexVNM2023 = Pusinex2.objects.filter(seccion__seccion__in=seccionesVNM2023)
+pusinexVNM2023 = Pusinex.objects.filter(seccion__seccion__in=seccionesVNM2023)
 
 queryVNM2024 = Seccion.objects.filter(seccion__in=seccionesVNM2024, tipo__lt=4, activa=True)\
     .order_by('distrito', 'municipio', 'seccion')
-pusinexVNM2024 = Pusinex2.objects.filter(seccion__seccion__in=seccionesVNM2024)
+pusinexVNM2024 = Pusinex.objects.filter(seccion__seccion__in=seccionesVNM2024)
 paquete_total = Seccion.objects.filter(tipo__lt=4, activa=True).order_by('distrito', 'municipio', 'seccion')
 
 

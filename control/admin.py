@@ -1,9 +1,9 @@
 from django.contrib import admin
-from .models import Entidad, Distrito, Municipio, Seccion, Pusinex2
+from .models import Entidad, Distrito, Municipio, Seccion, Pusinex
 
 
 class PusinexInline(admin.TabularInline):
-    model = Pusinex2
+    model = Pusinex
     extra = 1
 
 

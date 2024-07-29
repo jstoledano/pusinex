@@ -12,7 +12,7 @@ from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Div, HTML, Field, Button
 from crispy_forms.bootstrap import FormActions
-from control.models import Pusinex2, Seccion
+from control.models import Pusinex, Seccion
 import logging
 
 logger = logging.getLogger(__name__)
@@ -30,7 +30,7 @@ class PUSINEXForm(forms.ModelForm):
 
     class Meta:
         exclude = ('user', )
-        model = Pusinex2
+        model = Pusinex
 
     def __init__(self, *args, **kwargs):
         super(PUSINEXForm, self).__init__(*args, **kwargs)

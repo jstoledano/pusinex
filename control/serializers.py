@@ -2,7 +2,7 @@ from rest_framework import serializers
 from control.models import (
     Municipio,
     Seccion,
-    Pusinex2,
+    Pusinex,
 )
 
 
@@ -31,6 +31,6 @@ class PusinexSerializer(serializers.ModelSerializer):
     rev = serializers.SerializerMethodField()
 
     class Meta:
-        model = Pusinex2
+        model = Pusinex
         fields = '__all__'
         depth = 3

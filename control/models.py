@@ -85,7 +85,7 @@ class Seccion(models.Model):
         return f'{self.distrito.distrito:02} {self.municipio.municipio:03} {self.seccion:04}'
 
 
-class Pusinex2(models.Model):
+class Pusinex(models.Model):
     seccion = models.ForeignKey(Seccion, on_delete=models.CASCADE)
     f_act = models.DateField()
     hojas = models.PositiveSmallIntegerField()
