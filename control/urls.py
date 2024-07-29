@@ -4,7 +4,7 @@ from control.views import (
     MunicipioViewSet, SeccionViewSet,  PusinexViewSet,
     Index, Administration, CreatePUSINEX,
     PusinexDetail, MunicipioDetail,
-    MunicipioAutoComplete, VNM2024, VNMZipView
+    MunicipioAutoComplete, VNM2024, VNMZipView, PUSINEXZip
 )
 
 router = routers.SimpleRouter()
@@ -21,5 +21,6 @@ urlpatterns = [
     path('municipio/<int:pk>', MunicipioDetail.as_view(), name='municipio'),
     path('creation/', CreatePUSINEX.as_view(), name='create'),
     path('bgd/', Administration.as_view(), name='bgd'),
+    path('paquete/', PUSINEXZip.as_view(), name='paquete'),
     path('', Index.as_view(), name='index')
 ]

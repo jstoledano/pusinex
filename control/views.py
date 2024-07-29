@@ -128,6 +128,7 @@ pusinexVNM2023 = Pusinex2.objects.filter(seccion__seccion__in=seccionesVNM2023)
 queryVNM2024 = Seccion.objects.filter(seccion__in=seccionesVNM2024, tipo__lt=4, activa=True)\
     .order_by('distrito', 'municipio', 'seccion')
 pusinexVNM2024 = Pusinex2.objects.filter(seccion__seccion__in=seccionesVNM2024)
+paquete_total = Seccion.objects.filter(tipo__lt=4, activa=True).order_by('distrito', 'municipio', 'seccion')
 
 
 class VNM2024(ListView):
@@ -161,15 +162,15 @@ class VNMZipView(View):
         return FileResponse(open(zip_name, 'rb'))
 
 
-class PUSINEXZip(View):
+class PUSINEXZip(LoginRequiredMixin, View):
     @staticmethod
     def get(request):
         files = []
         zip_name = Path('media', 'pusinex', '29_pusinex.zip')
         zip_archive = zipfile.ZipFile(zip_name, mode='w', compression=zipfile.ZIP_DEFLATED, compresslevel=9)
-        for p in models.Pusinex2.objects.all():
+        for p in paquete_total:
             try:
-                files.append(Path(os.getcwd(), 'media', p.revision_set.latest().archivo.path))
+                files.append(p.pusinex2_set.latest().archivo.path)
             except:
                 pass
         with zip_archive as archive:
