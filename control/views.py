@@ -2,7 +2,6 @@ from dal import autocomplete
 from django.db.models import Q
 from django.views import View
 from django.views.generic import TemplateView, DetailView, ListView, CreateView
-from django_filters.rest_framework import DjangoFilterBackend
 from django.urls import reverse, reverse_lazy
 import zipfile
 from django.http import FileResponse
@@ -80,24 +79,6 @@ class CreatePUSINEX(LoginRequiredMixin, CreateView):
 
 class Administration(TemplateView):
     template_name = 'administration.html'
-
-
-class MunicipioViewSet(viewsets.ModelViewSet):
-    queryset = Municipio.objects.all()
-    serializer_class = MunicipioSerializer
-
-
-class SeccionViewSet(viewsets.ModelViewSet):
-    queryset = Seccion.objects.filter(activa=True).order_by('distrito', 'municipio', 'seccion')
-    serializer_class = SeccionSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['municipio', 'seccion']
-
-
-class PusinexViewSet(viewsets.ModelViewSet):
-    queryset = Pusinex.objects.all()
-    serializer_class = PusinexSerializer
-    filterset_fields = ['id', 'seccion__seccion', ]
 
 
 class LogoutView(TemplateView):
@@ -181,6 +162,22 @@ class PUSINEXZip(LoginRequiredMixin, View):
 YEAR_LATEST_PUSINEX = 2024
 
 
+class PUSINEXByYear(ListView):
+    """Lista las secciones con PUSINEX actualizados por año."""
+    model = Pusinex
+    template_name = 'control/pusinex_by_year.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(PUSINEXByYear, self).get_context_data(**kwargs)
+        context['year'] = self.kwargs.get('year')
+        return context
+
+    def get_queryset(self):
+        """Muestra las secciones con PUSINEX actualizados en el año seleccionado como valores únicos."""
+        qs = Pusinex.objects.filter(updated__year=self.kwargs.get('year')).order_by("updated", "seccion")
+        return qs
+
+
 class PUSINEXLastUpdate(ListView):
     """Lista las secciones con PUSINEX actualizados por año."""
     model = Pusinex
@@ -188,6 +185,9 @@ class PUSINEXLastUpdate(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(PUSINEXLastUpdate, self).get_context_data(**kwargs)
+        # Se obtienen los años en los que se han actualizado los PUSINEX como valores
+        # únicos para mostrar en la plantilla.
+        context['years'] = Pusinex.objects.values_list('updated__year', flat=True).distinct().order_by('updated__year')
         context['year'] = YEAR_LATEST_PUSINEX
         return context
 

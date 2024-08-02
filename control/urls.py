@@ -1,18 +1,23 @@
-from django.urls import path, re_path
+from django.urls import path, re_path, include
 from rest_framework import routers
 from control.views import (
-    MunicipioViewSet, SeccionViewSet,  PusinexViewSet,
     Index, Administration, CreatePUSINEX,
     PusinexDetail, MunicipioDetail,
     MunicipioAutoComplete, VNM2024, VNMZipView, PUSINEXZip,
-    PUSINEXLastUpdate
+    PUSINEXLastUpdate, PUSINEXByYear
+)
+from control.viewsets import (
+    MunicipioViewSet, SeccionViewSet, PusinexViewSet, EntidadViewSet, DistritoViewSet,
 )
 
 router = routers.SimpleRouter()
 
+router.register(r'entidad', EntidadViewSet)
+router.register(r'distrito', DistritoViewSet)
 router.register(r'municipio', MunicipioViewSet)
 router.register(r'seccion', SeccionViewSet)
 router.register(r'pusinex', PusinexViewSet)
+
 
 urlpatterns = [
     re_path(r'^municipio-autocomplete/$', MunicipioAutoComplete.as_view(), name='municipio-autocomplete'),
@@ -23,6 +28,10 @@ urlpatterns = [
     path('creation/', CreatePUSINEX.as_view(), name='create'),
     path('bgd/', Administration.as_view(), name='bgd'),
     path('paquete/', PUSINEXZip.as_view(), name='paquete'),
+    # URL /year/{int} toma un año como parámetro y devuelve el último paquete de datos de ese año
+    path('latest/<int:year>', PUSINEXByYear.as_view(), name='year'),
     path('latest/', PUSINEXLastUpdate.as_view(), name='latest'),
+    path('api/', include((router.urls, 'api'))),
+    path('api-auth/', include('rest_framework.urls')),
     path('', Index.as_view(), name='index')
 ]

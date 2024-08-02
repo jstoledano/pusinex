@@ -9,3 +9,4 @@ crispy-bootstrap5
 django-extensions
 jupyter
 django-cors-headers
+markdown

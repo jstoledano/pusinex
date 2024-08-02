@@ -1,9 +1,27 @@
 from rest_framework import serializers
 from control.models import (
+    Entidad,
+    Distrito,
     Municipio,
     Seccion,
     Pusinex,
 )
+
+
+class EntidadSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Entidad
+        fields = '__all__'
+        depth = 3
+
+
+class DistritoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Distrito
+        fields = '__all__'
+        depth = 3
 
 
 class MunicipioSerializer(serializers.ModelSerializer):
