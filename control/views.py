@@ -13,8 +13,7 @@ from rest_framework import viewsets
 
 from .forms import PUSINEXForm
 from .models import Municipio, Pusinex, Seccion
-from .serializers import (MunicipioSerializer,
-                                 PusinexSerializer, SeccionSerializer)
+from .serializers import (MunicipioSerializer, PusinexSerializer, SeccionSerializer)
 
 import logging
 
@@ -171,9 +170,28 @@ class PUSINEXZip(LoginRequiredMixin, View):
         for p in paquete_total:
             try:
                 files.append(p.pusinex2_set.latest().archivo.path)
-            except:
+            except Pusinex.DoesNotExist:
                 pass
         with zip_archive as archive:
             for file in files:
                 archive.write(file, arcname=Path(file).name)
         return FileResponse(open(zip_name, 'rb'))
+
+
+YEAR_LATEST_PUSINEX = 2024
+
+
+class PUSINEXLastUpdate(ListView):
+    """Lista las secciones con PUSINEX actualizados por año."""
+    model = Pusinex
+    template_name = 'control/pusinex_last_update.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(PUSINEXLastUpdate, self).get_context_data(**kwargs)
+        context['year'] = YEAR_LATEST_PUSINEX
+        return context
+
+    def get_queryset(self):
+        """Muestra las secciones con PUSINEX actualizados en el año seleccionado como valores únicos."""
+        qs = Pusinex.objects.filter(updated__year=YEAR_LATEST_PUSINEX).order_by("updated", "seccion")
+        return qs
