@@ -10,3 +10,4 @@ django-extensions
 jupyter
 django-cors-headers
 markdown
+django_select2
